@@ -138,6 +138,7 @@ export default function RetirementPlanner() {
     childExpenses: [defaultChildExpense, defaultChildExpense],
     assetExpenses: [defaultAssetExpense],
     inflationRate: 4
+    initialInvestmentRatio: (10000 / 30000) * 100 
     // Remove initialInvestmentRatio from here
   })
   const initialInvestmentRatio = (data.initialSIP / data.currentSalary) * 100
