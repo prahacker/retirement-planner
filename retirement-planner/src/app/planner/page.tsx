@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -137,11 +137,19 @@ export default function RetirementPlanner() {
     numberOfChildren: 2,
     childExpenses: [defaultChildExpense, defaultChildExpense],
     assetExpenses: [defaultAssetExpense],
-    inflationRate: 4
-    initialInvestmentRatio: (10000 / 30000) * 100 
-    // Remove initialInvestmentRatio from here
-  })
-  const initialInvestmentRatio = (data.initialSIP / data.currentSalary) * 100
+    inflationRate: 4,
+    initialInvestmentRatio: (10000 / 30000) * 100 // Set an initial value based on initialSIP and currentSalary
+  });
+  
+  // Recalculate initialInvestmentRatio when initialSIP or currentSalary changes
+  useEffect(() => {
+    setData((prevData) => ({
+      ...prevData,
+      initialInvestmentRatio: (prevData.initialSIP / prevData.currentSalary) * 100
+    }));
+  }, [data.initialSIP, data.currentSalary]);
+  
+  
   const [fireNumber, setFireNumber] = useState<number>(0)
   const [portfolioGrowth, setPortfolioGrowth] = useState<Array<{
     age: number,
@@ -659,11 +667,12 @@ export default function RetirementPlanner() {
     <div className="space-y-2">
       <Label htmlFor="initialInvestmentRatio">Initial Investment Ratio (%)</Label>
       <Input
-        id="initialInvestmentRatio"
-        type="number"
-        value={initialInvestmentRatio.toFixed(2)}
-        disabled
-      />
+  id="initialInvestmentRatio"
+  type="number"
+  value={data.initialInvestmentRatio ? data.initialInvestmentRatio.toFixed(2) : '0.00'}
+  disabled
+/>
+
     </div>
     <div className="space-y-2">
       <Label htmlFor="increaseModel">Increase Model</Label>
